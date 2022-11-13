@@ -14,7 +14,7 @@ window.onload = async () => {
   const API_URL_Comedy = "https://striveschool-api.herokuapp.com/api/movies/Comedy"; // testing the Comedy category
   const API_URL_Adventure = "https://striveschool-api.herokuapp.com/api/movies/Adventure"; // testing the Adventure category
 
-  const categories = [API_URL_Action, API_URL_Comedy, API_URL_Adventure]; // the list with all the categories
+  const urls = [API_URL_Action, API_URL_Comedy, API_URL_Adventure]; // the list with all the categories
 
   const parentAction = document.getElementById("actionMovies-1");
   const parentComedy = document.getElementById("comedyMovies-1");
@@ -43,12 +43,12 @@ const renderMovie = async (url, parent) => {
     moviesList.innerHTML = "";
 
     if (!Array.isArray(movies)) throw new Error("You need to pass an array into the function");
-    movies.forEach(({ imageUrl, _id }, index) => {
+    movies.forEach(({ category, imageUrl, _id }, index) => {
       const movieDiv = document.createElement("div");
       movieDiv.className = "col-md-2";
       movieDiv.id = `${_id}`;
 
-      movieDiv.innerHTML = `<a href="./details.html?movieId=${_id}"><img class="movie-cover" src=${imageUrl} id="image${index}"/></a> `;
+      movieDiv.innerHTML = `<a href="./details.html?category=${category}&movieId=${_id}"><img class="movie-cover" src=${imageUrl} id="image${index}"/></a> `;
       moviesList.appendChild(movieDiv);
     });
   } catch (err) {

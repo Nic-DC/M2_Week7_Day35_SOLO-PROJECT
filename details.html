@@ -73,12 +73,14 @@
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZmQyYWQ0YmUzZDAwMTU4NDYwMzgiLCJpYXQiOjE2NjgwODcwODIsImV4cCI6MTY2OTI5NjY4Mn0.VtbiHHI8R5YkZzRvBB0wBIO4SqtTZr10KGYVPHIVfOc",
         },
       };
+
       const movieId = new URLSearchParams(window.location.search).get("movieId");
+      const movieCategory = new URLSearchParams(window.location.search).get("category");
       console.log("MOVIE ID IS: " + movieId);
+      console.log("MOVIE CATEGORY IS: " + movieCategory);
 
       window.onload = async () => {
-        // const resp = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + movieId, options);
-        const resp = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + "Action", options);
+        const resp = await fetch(`https://striveschool-api.herokuapp.com/api/movies/${movieCategory}`, options);
         const movieList = await resp.json();
 
         console.log("the Action list looks like this: ", movieList);
@@ -89,19 +91,52 @@
         const { name, description, category, imageUrl, _id, createdAt, updatedAt, __v } = movieObj;
         const container = document.getElementById("movie-details");
         container.innerHTML = `<h1 class="display-4 bg-light">${name}</h1>
-                            <p class="bg-light">${description}</p>
-                            <h3 class="mb-4 bg-light">${category}</h3>
-                            <img class="img-fluid image-details" src=${imageUrl}/>
+                                <p class="bg-light">${description}</p>
+                                <h3 class="mb-4 bg-light">${category}</h3>
+                                <img class="img-fluid image-details" src=${imageUrl}/>
 
-                            <h6 class="bg-light py-3 pl-2">Server Details</h6>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item pl-2"><strong>id: </strong> ${_id} </li>
-                                <li class="list-group-item pl-2"><strong>createdAt: </strong> ${createdAt}</li>
-                                <li class="list-group-item pl-2"><strong>updatedAt: </strong> ${updatedAt}</li>
-                                <li class="list-group-item pl-2"><strong>version: </strong> ${__v}</li>
-                            </ul>
-                            <a href="./backoffice.html?movieId=${movieId}"> <button class="btn btn-warning mt-3">Edit Movie</button></a>`;
+                                <h6 class="bg-light py-3 pl-2">Server Details</h6>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item pl-2"><strong>id: </strong> ${_id} </li>
+                                    <li class="list-group-item pl-2"><strong>createdAt: </strong> ${createdAt}</li>
+                                    <li class="list-group-item pl-2"><strong>updatedAt: </strong> ${updatedAt}</li>
+                                    <li class="list-group-item pl-2"><strong>version: </strong> ${__v}</li>
+                                </ul>
+                                <a href="./backoffice.html?movieId=${movieId}"> <button class="btn btn-warning mt-3">Edit Movie</button></a>`;
       };
+
+      //   const movieCategories = async () => {
+      //     const resp = await fetch(`https://striveschool-api.herokuapp.com/api/movies`, options);
+      //     const categories = await resp.json();
+      //     console.log({ categories });
+
+      //     let actionMoviesCategory = ``;
+      //     let comedyMoviesCategory = ``;
+      //     let adventureMoviesCategory = ``;
+
+      //     for (let category of categories) {
+      //       if (category === "Action") {
+      //         actionMoviesCategory = category;
+      //       } else if (category === "Comedy") {
+      //         comedyMoviesCategory = category;
+      //       } else if (category === "Adventure") {
+      //         adventureMoviesCategory = category;
+      //       }
+      //     }
+
+      //     console.log({ actionMoviesCategory });
+      //     console.log({ comedyMoviesCategory });
+      //     console.log({ adventureMoviesCategory });
+
+      //     let URL_Action = `https://striveschool-api.herokuapp.com/api/movies/${actionMoviesCategory}`;
+      //     let URL_Comedy = `https://striveschool-api.herokuapp.com/api/movies/${comedyMoviesCategory}`;
+      //     let URL_Adventure = `https://striveschool-api.herokuapp.com/api/movies/${adventureMoviesCategory}`;
+
+      //     console.log({ URL_Action });
+      //     console.log({ URL_Comedy });
+      //     console.log({ URL_Adventure });
+      //   };
+      //   movieCategories();
     </script>
   </body>
 </html>
