@@ -135,16 +135,18 @@
         console.log({ movieList });
 
         if (movieId) {
-          movieList.forEach(({ name, description, category, imageUrl }, index) => {
-            // const { name, description, category, imageUrl } = movieObj;
-            document.getElementById("name").value = name;
-            document.getElementById("description").value = description;
-            document.getElementById("category").value = category;
-            document.getElementById("imageUrl").value = imageUrl;
+          let movieObj = movieList.find((movie) => movie._id === movieId);
 
-            const deleteBtn = document.querySelector(".btn-danger").classList.remove("d-none");
-            console.log(movieList[index]);
-          });
+          //movieList.forEach(({ name, description, category, imageUrl }, index) => {
+          const { name, description, category, imageUrl } = movieObj;
+          document.getElementById("name").value = name;
+          document.getElementById("description").value = description;
+          document.getElementById("category").value = category;
+          document.getElementById("imageUrl").value = imageUrl;
+
+          const deleteBtn = document.querySelector(".btn-danger").classList.remove("d-none");
+          console.log(movieList[index]);
+          //});
         }
       };
 
