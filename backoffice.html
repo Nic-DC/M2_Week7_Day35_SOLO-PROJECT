@@ -107,34 +107,33 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      //   const movieId = new URLSearchParams(window.location.search).get("movieId");
+      const options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZmQyYWQ0YmUzZDAwMTU4NDYwMzgiLCJpYXQiOjE2NjgwODcwODIsImV4cCI6MTY2OTI5NjY4Mn0.VtbiHHI8R5YkZzRvBB0wBIO4SqtTZr10KGYVPHIVfOc",
+        },
+      };
 
-      //   const endpoint = movieId
-      //     ? "https://striveschool-api.herokuapp.com/api/movies/" + movieId
-      //     : "https://striveschool-api.herokuapp.com/api/movies/";
-      //   const method = movieId ? "PUT" : "POST";
-      const endpointAction = "https://striveschool-api.herokuapp.com/api/movies/Action";
-      const endpoint = "https://striveschool-api.herokuapp.com/api/movies";
-      const method = "POST";
+      const movieId = new URLSearchParams(window.location.search).get("movieId");
+      const movieCategory = new URLSearchParams(window.location.search).get("category");
+      console.log("MOVIE ID IS: " + movieId);
+      console.log("MOVIE CATEGORY IS: " + movieCategory);
+
+      const endpoint = movieId
+        ? `https://striveschool-api.herokuapp.com/api/movies/${movieCategory}`
+        : `https://striveschool-api.herokuapp.com/api/movies/`;
+
+      const method = movieCategory ? "PUT" : "POST";
 
       window.onload = async () => {
-        const options = {
-          method: "GET",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZmQyYWQ0YmUzZDAwMTU4NDYwMzgiLCJpYXQiOjE2NjgwODcwODIsImV4cCI6MTY2OTI5NjY4Mn0.VtbiHHI8R5YkZzRvBB0wBIO4SqtTZr10KGYVPHIVfOc",
-          },
-        };
-
-        //if (movieId) {
-        const response = await fetch(endpointAction, options);
-        // console.log(response.url);
-        //const cat = await fetch(response, options);
+        const response = await fetch(endpoint, options);
         const movieList = await response.json();
+        console.log({ movieList });
 
         movieList.forEach(({ name, description, category, imageUrl }, index) => {
+          // const { name, description, category, imageUrl } = movieObj;
           document.getElementById("name").value = name;
           document.getElementById("description").value = description;
           document.getElementById("category").value = category;
@@ -143,11 +142,9 @@
           const deleteBtn = document.querySelector(".btn-danger").classList.remove("d-none");
           console.log(movieList[index]);
         });
-        // const movieObj = await response.json();
-        //console.log({ cat });
-        // console.log({ movieObj });
-
-        //}
+        const movieObj = await response.json();
+        console.log({ cat });
+        console.log({ movieObj });
       };
 
       const isLoading = (bool) => {
