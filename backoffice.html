@@ -81,7 +81,7 @@
               <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
               Add
             </button>
-            <button type="button" class="btn btn-warning mt-3">Edit</button>
+            <button type="button" class="btn btn-warning mt-3" onclick="handleSubmit(event)">Edit</button>
             <button type="button" class="btn btn-danger d-none mt-3" onclick="handleDelete()">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,29 +122,30 @@
       console.log("MOVIE CATEGORY IS: " + movieCategory);
 
       const endpoint = movieId
-        ? `https://striveschool-api.herokuapp.com/api/movies/${movieCategory}`
+        ? `https://striveschool-api.herokuapp.com/api/movies/${movieId}`
         : `https://striveschool-api.herokuapp.com/api/movies/`;
 
-      const method = movieCategory ? "PUT" : "POST";
+      const endpointCategory = `https://striveschool-api.herokuapp.com/api/movies/${movieCategory}`;
+
+      const method = movieId ? "PUT" : "POST";
 
       window.onload = async () => {
-        const response = await fetch(endpoint, options);
+        const response = await fetch(endpointCategory, options);
         const movieList = await response.json();
         console.log({ movieList });
 
-        movieList.forEach(({ name, description, category, imageUrl }, index) => {
-          // const { name, description, category, imageUrl } = movieObj;
-          document.getElementById("name").value = name;
-          document.getElementById("description").value = description;
-          document.getElementById("category").value = category;
-          document.getElementById("imageUrl").value = imageUrl;
+        if (movieId) {
+          movieList.forEach(({ name, description, category, imageUrl }, index) => {
+            // const { name, description, category, imageUrl } = movieObj;
+            document.getElementById("name").value = name;
+            document.getElementById("description").value = description;
+            document.getElementById("category").value = category;
+            document.getElementById("imageUrl").value = imageUrl;
 
-          const deleteBtn = document.querySelector(".btn-danger").classList.remove("d-none");
-          console.log(movieList[index]);
-        });
-        const movieObj = await response.json();
-        console.log({ cat });
-        console.log({ movieObj });
+            const deleteBtn = document.querySelector(".btn-danger").classList.remove("d-none");
+            console.log(movieList[index]);
+          });
+        }
       };
 
       const isLoading = (bool) => {
@@ -184,13 +185,14 @@
           const movie = await response.json();
           isLoading(false);
           if (movieId) {
-            alert("Movie with id:  + movie._id + got edited successfully");
+            alert(`Movie with id: ${movie._id} got edited successfully`);
           } else {
-            alert("Movie created successfully, id is:   + movie._id");
+            alert(`Movie created successfully, id is: ${movie._id}`);
           }
         } catch (error) {
           alert("Something went wrong, " + error);
         }
+        window.location.assign("/");
       };
 
       const handleDelete = async () => {
