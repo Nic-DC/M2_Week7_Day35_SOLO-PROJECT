@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <link href="css/styles.css" rel="stylesheet" />
+    <title>Movie Details</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/index.html">
+          <img src="./assets/netflix_logo.png" id="logo" />
+        </a>
+      </div>
+    </nav>
+
+    <!-- CONTAINER -->
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+          <h6 class="text-light">Movie Details</h6>
+          <div id="movie-details">
+            <!-- <div class="spinner-grow text-success" role="status">
+              <span class="sr-only">Loading...</span>
+            </div> -->
+            <!-- <h1 class="display-4">PRODUCT NAME</h1>
+                      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis ut atque labore, pariatur sunt
+                          dolores sapiente exercitationem eum perferendis ipsam nemo officiis accusantium eveniet magni
+                          tempore tempora voluptatem, recusandae unde.
+                      </p>
+                      <p class="text-monospace">DATE AND TIME</p>
+                      <h3 class="mb-4">40€</h3>
+                      <h6 class="bg-light py-3 pl-2">Server Details</h6>
+                      <ul class="list-group list-group-flush">
+                          <li class="list-group-item pl-2">item 1</li>
+                          <li class="list-group-item pl-2">item 2</li>
+                          <li class="list-group-item pl-2">item 3</li>
+                      </ul> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- BOOTSTRAP js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- js -->
+    <script>
+      const options = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZmQyYWQ0YmUzZDAwMTU4NDYwMzgiLCJpYXQiOjE2NjgwODcwODIsImV4cCI6MTY2OTI5NjY4Mn0.VtbiHHI8R5YkZzRvBB0wBIO4SqtTZr10KGYVPHIVfOc",
+        },
+      };
+      const movieId = new URLSearchParams(window.location.search).get("movieId");
+      console.log("MOVIE ID IS: " + movieId);
+
+      window.onload = async () => {
+        // const resp = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + movieId, options);
+        const resp = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + "Action", options);
+        const movieList = await resp.json();
+
+        console.log("the Action list looks like this: ", movieList);
+
+        const movieObj = movieList.find((movie) => movie._id === movieId);
+        console.log({ movieObj });
+
+        const { name, description, category, imageUrl, _id, createdAt, updatedAt, __v } = movieObj;
+        const container = document.getElementById("movie-details");
+        container.innerHTML = `<h1 class="display-4 bg-light">${name}</h1>
+                            <p class="bg-light">${description}</p>
+                            <h3 class="mb-4 bg-light">${category}</h3>
+                            <img class="img-fluid image-details" src=${imageUrl}/>
+
+                            <h6 class="bg-light py-3 pl-2">Server Details</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item pl-2"><strong>id: </strong> ${_id} </li>
+                                <li class="list-group-item pl-2"><strong>createdAt: </strong> ${createdAt}</li>
+                                <li class="list-group-item pl-2"><strong>updatedAt: </strong> ${updatedAt}</li>
+                                <li class="list-group-item pl-2"><strong>version: </strong> ${__v}</li>
+                            </ul>
+                            <a href="./backoffice.html?movieId=${movieId}"> <button class="btn btn-warning mt-3">Edit Movie</button></a>`;
+      };
+    </script>
+  </body>
+</html>
